@@ -23,7 +23,7 @@ jobs:
 
       - name: Build docker image
         run:
-          docker build -t gcr.io/cs-tmpl-test/Dockerfile:${{github.sha}}  
+          docker build -t gcr.io/cs-tmpl-test/Dockerfile:${{github.sha}} .  
 
       - name: push docker image to gcr
         run:
