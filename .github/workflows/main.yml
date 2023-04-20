@@ -1,34 +1,63 @@
 name: Push docker image to GCR
 
+
+
+
 on:
-  push:
-      branches:
-        - main
+
+  push:
+
+    branches: [ main ]
+
+
 
 
 jobs:
 
-  setup-build-dev:
-    name: Setup, Build, and Deploy
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+  setup-build-dev:
+
+    name: Setup, Build, and Deploy
+
+    runs-on: ubuntu-latest
+
+    
+
+    steps:
+
+      - name: Checkout
+
+        uses: actions/checkout@v2
+
+    
+
+      - name: Log into GCP
+
+        uses: google-github-actions/setup-gcloud@v0
+
+        with:
+
+          version: 'latest'
+
+          project_id: cs-tmpl-test
+
+          service_account_email: workload-identity-cloudsufi@cs-tmpl-test.iam.gserviceaccount.com
+
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
 
 
-      - name: Log into GCP
-        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
-        with:
-          version: 'latest'
-          project_id: cs-tmpl-test
-          service_account_email: workload-identity-cloudsufi@cs-tmpl-test.iam.gserviceaccount.com
-          service_account_key: ${{ secrets.GCP_SA_KEY }}
 
-      - name: Build docker image
-        run:
-          docker build -t gcr.io/cs-tmpl-test/Dockerfile:${{github.sha}}  
-    
-      - name: push docker image to gcr
-        run:
-          docker push gcr.io/cs-tmpl-test/Dockerfile:${{github.sha}}
 
+      - name: Build docker image
+
+        run:
+
+          docker build -t gcr.io/cs-tmpl-test/Dockerfile:${{github.sha}}  
+
+
+
+
+      - name: push docker image to gcr
+
+        run:
+
+          docker push gcr.io/cs-tmpl-test/Dockerfile:${{github.sha}}
