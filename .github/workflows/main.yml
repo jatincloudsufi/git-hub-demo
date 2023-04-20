@@ -1,7 +1,6 @@
 name:Push docker image to GCR
-
 on:
-  push:
+   push:
       branches:
         -main
 
