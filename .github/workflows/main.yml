@@ -3,7 +3,7 @@ name: Push docker image to GCR
 on:
   push:
       branches:
-        -main
+        - main
 
 
 jobs:
