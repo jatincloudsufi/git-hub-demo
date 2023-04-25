@@ -1,0 +1,25 @@
+# Github workflow to trigger one or N number of github workflows within the same organization using post request (RestAPI)
+
+ame: Trigger all the github workflows
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Run all the github workflows
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger workflows
+        run: |
+          repoName=(repoName1 repoName2 repoName3)
+          workflowID=(workflowID1 workflowID2 workflowID3)
+          for i in $(seq 0 $((${#repoName[@]}-1)))
+          do
+            echo "Processing ${repoName[i]} and ${workflowID[i]}"
+            curl -X POST -u fdidev:${{secrets.TEMP_TOKEN}} "https://api.github.com/repos/${orgName}/${repoName[i]}/actions/workflows/${workflowID[i]}/dispatches" \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Content-Type: application/json" \
+            --data "{\"ref\":\"develop\"}"
+            sleep 60s
+          done
